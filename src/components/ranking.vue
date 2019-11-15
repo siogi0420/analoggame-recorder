@@ -65,13 +65,13 @@ export default {
 	},
 	mounted(){
     this.resultOfDate = this.$localStorage.get('resultOfDate')
+    console.log("this.resultOfDate")
     console.log(this.resultOfDate)
-    var json = JSON.parse(this.resultOfDate)
+    var json = this.resultOfDate[0];
     console.log("json")
     console.log(json)
-    var result = json[0]
-    console.log("result")
-    console.log(result)
+    console.log(json.date)
+    console.log(json.result)
   }
 }
 </script>
