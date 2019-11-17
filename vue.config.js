@@ -10,5 +10,6 @@ module.exports = {
   pwa:{
   	name: 'AnalogGame-Recorder',
     themeColor: '#EF5350',
+    short_name: 'AnalogGameReco'
   }
 }
