@@ -1,7 +1,6 @@
 {
   "name": "AnalogGame-Recorder",
   "short_name": "AnalogGameReco",
-  "theme_color": "pwa.themeColor",
   "themeColor": "#EF5350",
   "icons": [
     {
@@ -45,10 +44,12 @@
       "type": "image/png"
     }
   ],
-  "favicon32": "./img/icons/favicon-32x32.png",
-  "favicon16": "./img/icons/favicon-16x16.png",
-  "appleTouchIcon": "./img/icons/icon-152x152.png",
-  "msTileImage": "./img/icons/icon-144x144.png",
+  "iconPaths": {
+      "favicon32": "./img/icons/favicon-32x32.png",
+      "favicon16": "./img/icons/favicon-16x16.png",
+      "appleTouchIcon": "./img/icons/icon-152x152.png",
+      "msTileImage": "./img/icons/icon-144x144.png"
+    },
   "start_url": ".",
   "display": "standalone",
   "background_color": "#000000"

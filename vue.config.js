@@ -7,10 +7,4 @@ module.exports = {
   outputDir: 'docs/',
   assetsDir: './',
   publicPath: './',
-  pwa: {
-    themeColor: '#EF5350',
-    msTileColor: '#000000',
-    appleMobileWebAppCapable: 'yes',
-    appleMobileWebAppStatusBarStyle: 'black',
-  }
 }
