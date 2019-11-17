@@ -1,7 +1,8 @@
 {
   "name": "AnalogGame-Recorder",
   "short_name": "AnalogGameReco",
-  "theme_color": "#4DBA87",
+  "theme_color": "pwa.themeColor",
+  "themeColor": "#EF5350",
   "icons": [
     {
       "src": "./img/icons/icon-192x192.png",

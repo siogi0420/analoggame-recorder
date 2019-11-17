@@ -7,10 +7,14 @@ Vue.use(Vuetify);
 export default new Vuetify({
 	theme:{
 		dark:true,
+
 		themes:{
 			dark:{
 				primary: colors.red.lighten1,
+			},
+			light:{
+				primary: colors.red.lighten1,
 			}
-		}
+		},
 	}
 });
