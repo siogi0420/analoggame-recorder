@@ -28,5 +28,10 @@ if (process.env.NODE_ENV === 'production') {
     error (error) {
       console.error('Error during service worker registration:', error)
     }
+  }).then(registration => {
+    registration.onupdatefound = function() {
+        console.log('アップデートがあります！');
+        registration.update();
+      }
   })
 }
