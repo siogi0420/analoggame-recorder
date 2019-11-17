@@ -7,4 +7,8 @@ module.exports = {
   outputDir: 'docs/',
   assetsDir: './',
   publicPath: './',
+  pwa:{
+  	name: 'AnalogGame-Recorder',
+    themeColor: '#EF5350',
+  }
 }
