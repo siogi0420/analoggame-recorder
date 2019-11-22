@@ -19,7 +19,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr v-for="result in resultOfDate[gameDates.indexOf(selectedDate)].result">
+					<tr v-for="result in resultOfDate[gameDates.indexOf(selectedDate)].result" id="rank_tr">
 						<td min-width="100" style="white-space: nowrap">{{ result.name }}</td>
 						<td id="Score">
 							<div id="ScoreDetail">{{ result.score }}</div>
@@ -53,7 +53,7 @@ export default {
   	graphSize: function(score) {
   		const MaxScore = Math.max.apply(null, this.resultOfDate[this.gameDates.indexOf(this.selectedDate)].result.map(result => Math.abs(result.score)));
   		return Math.abs(score) / MaxScore * 100;
-  	}
+  	},
   }
 }
 
@@ -97,4 +97,9 @@ const sortResult = (result) => {
 	background:#FF1744A0;
 	color:#FF1744A0;
 }
+
+#rank_tr {
+  background:#424242
+}
+
 </style>
