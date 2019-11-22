@@ -12,10 +12,21 @@
           contain
           src="./assets/logo.png"
           transition="scale-transition"
+          height="40"
           width="40"
         />
       </div>
-      </v-btn>
+      <v-spacer></v-spacer>
+      <div class="d-flex justify-end">
+        <v-img
+          alt="write icon"
+          src="./assets/icon-edit-1.png"
+          transition="scale-transition"
+          width="30"
+          contain
+          id="writeIcon"
+        />
+      </div>
     </v-app-bar>
     <v-content>
       <Ranking/>
@@ -50,4 +61,5 @@ export default {
     background-color: #53ba82;
       color: #ffffff;
   }
+
 </style>
