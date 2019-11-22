@@ -6,10 +6,11 @@
           :items="gameDates"
            v-model="selectedDate"
            return-object
+           v-on:change=""
         ></v-select>
       </v-col>
      </v-row>
-		<v-simple-table fixed-header height="300px" v-if="resultOfDate">
+		<v-simple-table fixed-header height="auto" v-if="resultOfDate">
 			<template v-slot:default>
 				<thead>
 					<tr>
@@ -18,11 +19,12 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr v-for="result in resultOfDate[0].result">
+					<tr v-for="result in resultOfDate[gameDates.indexOf(selectedDate)].result">
 						<td min-width="100" style="white-space: nowrap">{{ result.name }}</td>
 						<td id="Score">
 							<div id="ScoreDetail">{{ result.score }}</div>
-							<div id="Graph" v-bind:style="{width:Math.abs(result.score) / 100 + 'px'}"><br></div>
+							<div v-if="result.score >= 0" id="Graph" v-bind:style="{width:graphSize(result.score) + '%'}"><br></div>
+							<div v-else id="MinusGraph" v-bind:style="{width:graphSize(result.score) + '%'}"><br></div>
 						</td>
 					</tr>
 				</tbody>
@@ -35,46 +37,64 @@
 export default {
 	data () {
 		return {
-			desserts: [
-				{
-					name: 'たぬき',
-					calories: 159,
-				},
-				{
-					name: '子荻',
-					calories: 237,
-				},
-				{
-					name: 'ゆろ',
-					calories: 262,
-				},
-				{
-					name: 'えりさ',
-					calories: 305,
-				},
-				{
-					name: 'たきゃはし',
-					calories: 356,
-				},
-			],
-			items: ['総合', '2019/11/15', '2019/10/30', '2019/10/16'],
 			selectedDate: '総合',
 			resultOfDate:'',
 			gameDates:[],
 		}
 	},
 	mounted(){
-	const result = this.$localStorage.get('resultOfDate');
-    this.resultOfDate = result;
-    this.gameDates = result.map(result => result.date)
-    this.gameDates.unshift('総合')
-    console.log(this.gameDates)
+
+		const result = this.$localStorage.get('resultOfDate');
+    this.resultOfDate = getAllResult(result).concat(result);
+    sortResult(this.resultOfDate);
+    this.gameDates = this.resultOfDate.map(result => result.date);
+  },
+  methods:{
+  	graphSize: function(score) {
+  		const MaxScore = Math.max.apply(null, this.resultOfDate[this.gameDates.indexOf(this.selectedDate)].result.map(result => Math.abs(result.score)));
+  		return Math.abs(score) / MaxScore * 100;
+  	}
   }
 }
+
+const getAllResult = (result) => {
+	const resultAll = result.map(resultOfDate => resultOfDate.result);
+  const obj = resultAll.reduce((prev, current) => {
+  	const obj = current.reduce((_prev, _current) => {
+   		_prev[_current.name] = _current.score;
+   		return _prev;
+   	}, {});
+
+   	Object.keys(obj).forEach(key => {
+   		if (!prev[key]) {
+   			prev[key] = obj[key];
+   		} else {
+   			prev[key] += obj[key];
+   		}
+   	});
+
+   	return prev;
+  }, {});
+
+  const allResult = [{date:'総合', result:Object.entries(obj).map(([key, value]) => ({'name':key, 'score':value}))}];
+  return allResult;
+}
+
+const sortResult = (result) => {
+	result.map(resultOfDate => {
+		resultOfDate.result = resultOfDate.result.sort((a, b) => b.score - a.score);
+	});
+}
+
 </script>
 <style>
 #Graph {
 	background:#FF8A65;
 	color:#FF8A65;
+}
+
+#MinusGraph {
+	background:#FF1744A0;
+	color:#FF1744A0;
 }
 </style>

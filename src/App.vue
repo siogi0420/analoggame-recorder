@@ -40,6 +40,9 @@ export default {
       
     }
   },
+  mounted(){
+    this.$localStorage.remove('resultOfDate');
+  }
 };
 </script>
 <style scoped>
