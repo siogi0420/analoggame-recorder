@@ -2,14 +2,14 @@
 	<v-container>
 		<v-row align="center">
 			<v-col class="d-flex" cols="12" sm="6">
-        <v-select
-          :items="gameDates"
-           v-model="selectedDate"
-           return-object
-           v-on:change=""
-        ></v-select>
-      </v-col>
-     </v-row>
+        		<v-select
+          			:items="gameDates"
+           			v-model="selectedDate"
+           			return-object
+           			v-on:change=""
+        		></v-select>
+      		</v-col>
+     	</v-row>
 		<v-simple-table fixed-header height="auto" v-if="resultOfDate">
 			<template v-slot:default>
 				<thead>
@@ -30,6 +30,9 @@
 				</tbody>
 			</template>
 		</v-simple-table>
+		<div>
+			<v-btn color="primary" v-on:click="ShareAction">共有</v-btn>
+		</div>
 	</v-container>
 </template>
 
@@ -43,18 +46,20 @@ export default {
 		}
 	},
 	mounted(){
-
 		const result = this.$localStorage.get('resultOfDate');
     this.resultOfDate = getAllResult(result).concat(result);
     sortResult(this.resultOfDate);
     this.gameDates = this.resultOfDate.map(result => result.date);
   },
   methods:{
-  	graphSize: function(score) {
-  		const MaxScore = Math.max.apply(null, this.resultOfDate[this.gameDates.indexOf(this.selectedDate)].result.map(result => Math.abs(result.score)));
-  		return Math.abs(score) / MaxScore * 100;
-  	},
-  }
+		graphSize: function(score) {
+			const MaxScore = Math.max.apply(null, this.resultOfDate[this.gameDates.indexOf(this.selectedDate)].result.map(result => Math.abs(result.score)));
+			return Math.abs(score) / MaxScore * 100;
+		},
+		ShareAction: function() {
+			console.log("share action");
+		}
+	}
 }
 
 const getAllResult = (result) => {
