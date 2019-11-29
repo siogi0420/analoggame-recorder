@@ -32,7 +32,7 @@
     <v-content id="ranking">
       <Ranking/>
     </v-content>
-    <v-content>
+    <v-content class="pt-0">
       <Share/>
     </v-content>
   </v-app>
