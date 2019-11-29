@@ -11,5 +11,8 @@ module.exports = {
   	name: 'AnalogGame-Recorder',
     themeColor: '#EF5350',
     short_name: 'AnalogGameReco'
-  }
+  },
+  publicPath: '/analoggame-recorder',
+  filenameHashing: false,
+  productionSourceMap: false,
 }
