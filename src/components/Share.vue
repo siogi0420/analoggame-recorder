@@ -1,6 +1,6 @@
 <template>
   <v-container id="share">
-    <div v-if="CanShare == true">
+    <div>
       <v-btn color="primary" v-on:click="ShareAction" block>共有</v-btn>
     </div>
   </v-container>
