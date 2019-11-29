@@ -30,9 +30,6 @@
 				</tbody>
 			</template>
 		</v-simple-table>
-		<div>
-			<v-btn color="primary" v-on:click="ShareAction">共有</v-btn>
-		</div>
 	</v-container>
 </template>
 

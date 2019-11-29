@@ -4,6 +4,7 @@
       app
       color="primary"
       dark
+      id="header"
     >
       <div class="d-flex align-center">
         <v-img
@@ -28,8 +29,11 @@
         />
       </div>
     </v-app-bar>
-    <v-content>
+    <v-content id="ranking">
       <Ranking/>
+    </v-content>
+    <v-content>
+      <Share/>
     </v-content>
   </v-app>
 </template>
@@ -37,18 +41,20 @@
 <script>
 // import HelloWorld from './components/HelloWorld';
 import Ranking from './components/ranking';
+import Share from './components/Share';
 
 export default {
   name: 'App',
 
   components: {
     // HelloWorld,
-    Ranking
+    Ranking,
+    Share
   },
 
   data: () => {
     return {
-      
+
     }
   },
   mounted(){
