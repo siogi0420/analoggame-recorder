@@ -19,6 +19,7 @@
       </div>
       <v-spacer></v-spacer>
       <div class="d-flex justify-end">
+        <router-link to="/Input" v-if="this.$route.path == '/'">
         <v-img
           alt="write icon"
           src="./assets/icon-edit-1.png"
@@ -26,30 +27,35 @@
           width="30"
           contain
           id="writeIcon"
-        />
+          v-on:click="addData">
+        </v-img>
+      </router-link>
+      <router-link to="/Input" v-if="this.$route.path == '/Input'">
+        <v-img
+          alt="write icon"
+          src="./assets/close_icon.png"
+          transition="scale-transition"
+          width="24"
+          contain
+          id="writeIcon"
+          v-on:click="back">
+        </v-img>
+      </router-link>
       </div>
     </v-app-bar>
-    <v-content id="ranking">
-      <Ranking/>
-    </v-content>
-    <v-content class="pt-0">
-      <Share/>
-    </v-content>
+    <router-view></router-view>
   </v-app>
 </template>
 
 <script>
-// import HelloWorld from './components/HelloWorld';
-import Ranking from './components/ranking';
-import Share from './components/Share';
+
+import Main from './components/Main';
 
 export default {
   name: 'App',
 
   components: {
-    // HelloWorld,
-    Ranking,
-    Share
+    // Main
   },
 
   data: () => {
@@ -58,7 +64,15 @@ export default {
     }
   },
   mounted(){
-    this.$localStorage.remove('resultOfDate');
+    // this.$localStorage.remove('resultOfDate');
+  },
+  methods:{
+    addData:function(){
+      console.log("add data");
+    },
+    back:function(){
+      this.$router.back();
+    }
   }
 };
 </script>
@@ -67,5 +81,4 @@ export default {
     background-color: #53ba82;
       color: #ffffff;
   }
-
 </style>

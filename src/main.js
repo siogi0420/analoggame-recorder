@@ -3,6 +3,7 @@ import App from './App.vue'
 import './registerServiceWorker'
 import vuetify from './plugins/vuetify';
 import VueLocalStorage from 'vue-localstorage'
+import router from './router'
 
 Vue.config.productionTip = false
 Vue.use(VueLocalStorage)
@@ -10,6 +11,8 @@ Vue.use(VueLocalStorage)
 new Vue({
   vuetify,
   render: h => h(App),
+  router,
+
   localStorage: {
   	resultOfDate:{
   		type: Object,
