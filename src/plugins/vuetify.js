@@ -16,5 +16,5 @@ export default new Vuetify({
 				primary: colors.red.lighten1,
 			}
 		},
-	}
+	},
 });
