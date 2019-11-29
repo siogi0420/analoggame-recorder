@@ -1,6 +1,6 @@
 <template>
   <v-container id="share">
-    <div>
+    <div v-if="CanShare() == false">
       <v-btn color="primary" v-on:click="ShareAction" block>共有</v-btn>
     </div>
   </v-container>
@@ -8,6 +8,7 @@
 
 <script>
 import html2canvas from 'html2canvas';
+import domtoimage from 'dom-to-image';
 
 export default {
   data () {
@@ -22,12 +23,13 @@ export default {
       var padd = document.getElementById("ranking").style.paddingTop;
       var height = paddingTop + document.getElementById("ranking").clientHeight;
       console.log("share action");
-      html2canvas(document.body, {height:606, y:padd}).then(canvas => {
+
+      html2canvas(document.getElementById("ranking")).then(canvas => {
         canvas.toBlob(blob => {
           const image = new File([blob], 'tmp.png', {type: 'image/png'});
           navigator.share({
-            text: 'アプリ連携無しで画像がシェアできました！',
-            url: 'https://tohutohu.github.io/no-login-image-share/',
+            text: 'test',
+            url: '',
             files: [image]
           }).then(() => {
             console.log('Share was successful.')
