@@ -8,7 +8,6 @@
 
 <script>
 import html2canvas from 'html2canvas';
-import domtoimage from 'dom-to-image';
 
 export default {
   data () {
