@@ -12,7 +12,7 @@ new Vue({
   vuetify,
   render: h => h(App),
   router,
-
+  serverCacheKey:false,
   localStorage: {
   	resultOfDate:{
   		type: Object,

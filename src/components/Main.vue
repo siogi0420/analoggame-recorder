@@ -3,7 +3,7 @@
     <v-content id="ranking" class="pt-6">
       <Ranking/>
     </v-content>
-    <v-content class="pt-0 px-2">
+    <v-content class="pt-0 px-0">
       <Share/>
     </v-content>
   </v-container>
