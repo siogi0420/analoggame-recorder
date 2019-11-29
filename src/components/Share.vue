@@ -23,11 +23,11 @@ export default {
       var height = paddingTop + document.getElementById("ranking").clientHeight;
       console.log("share action");
 
-      html2canvas(document.getElementById("ranking")).then(canvas => {
+      html2canvas(document.body).then(canvas => {
         canvas.toBlob(blob => {
           const image = new File([blob], 'tmp.png', {type: 'image/png'});
           navigator.share({
-            text: 'test',
+            text: '今回の結果',
             url: '',
             files: [image]
           }).then(() => {

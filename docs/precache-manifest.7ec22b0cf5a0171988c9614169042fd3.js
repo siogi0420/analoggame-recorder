@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "8eeffe0b452e51e91598",
+    "revision": "50d250ac57b7edf17e40",
     "url": "/analoggame-recorder/css/app.css"
   },
   {
-    "revision": "b48547c25aac7e83ec38",
+    "revision": "873764f37c8a9de9cf6f",
     "url": "/analoggame-recorder/css/chunk-vendors.css"
   },
   {
@@ -20,11 +20,11 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/analoggame-recorder/index.html"
   },
   {
-    "revision": "8eeffe0b452e51e91598",
+    "revision": "50d250ac57b7edf17e40",
     "url": "/analoggame-recorder/js/app.js"
   },
   {
-    "revision": "b48547c25aac7e83ec38",
+    "revision": "873764f37c8a9de9cf6f",
     "url": "/analoggame-recorder/js/chunk-vendors.js"
   },
   {
