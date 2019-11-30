@@ -1,7 +1,7 @@
 <template>
   <v-container id="share">
     <div v-if="CanShare() == true">
-      <v-btn color="primary" v-on:click="ShareAction" block>共有1</v-btn>
+      <v-btn color="primary" v-on:click="ShareAction" block>共有2</v-btn>
     </div>
   </v-container>
 </template>

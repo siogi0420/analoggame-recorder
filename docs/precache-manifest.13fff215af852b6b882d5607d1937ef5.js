@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "9b008b2887987e33e64f",
+    "revision": "03ad81cddd146174d7e7",
     "url": "/analoggame-recorder/css/app.css"
   },
   {
@@ -20,7 +20,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/analoggame-recorder/index.html"
   },
   {
-    "revision": "9b008b2887987e33e64f",
+    "revision": "03ad81cddd146174d7e7",
     "url": "/analoggame-recorder/js/app.js"
   },
   {
