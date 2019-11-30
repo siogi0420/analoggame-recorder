@@ -1,7 +1,7 @@
 <template>
   <v-container id="share">
     <div v-if="CanShare() == true">
-      <v-btn color="primary" v-on:click="ShareAction" block>共有2</v-btn>
+      <v-btn color="primary" v-on:click="ShareAction" block>共有</v-btn>
     </div>
   </v-container>
 </template>
@@ -36,8 +36,10 @@ export default {
               files: [image]
             }).then(() => {
               console.log('Share was successful.')
+              document.getElementById("share").style.display ="block";
             }).catch((error) => {
               console.log('Sharing failed', error)
+              document.getElementById("share").style.display ="block";
             });
           });
         } else {
