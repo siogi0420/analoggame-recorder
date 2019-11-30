@@ -16,7 +16,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/analoggame-recorder/img/logo.png"
   },
   {
-    "revision": "1d0bc573badbb27a5a360fe60fa1c00f",
+    "revision": "5536589ae2cb0d98709031550bedc321",
     "url": "/analoggame-recorder/index.html"
   },
   {
