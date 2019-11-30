@@ -22,20 +22,28 @@ export default {
       var padd = document.getElementById("ranking").style.paddingTop;
       var height = paddingTop + document.getElementById("ranking").clientHeight;
       console.log("share action");
-
-      html2canvas(document.body).then(canvas => {
-        canvas.toBlob(blob => {
-          const image = new File([blob], 'tmp.png', {type: 'image/png'});
-          navigator.share({
-            text: '今回の結果',
-            url: '',
-            files: [image]
-          }).then(() => {
-            console.log('Share was successful.')
-          }).catch((error) => {
-            console.log('Sharing failed', error)
+      document.getElementById("share").style.display ="none";
+      window.scrollTo(0, 0);
+      html2canvas(document.body,{
+        windowHeight: document.getElementsByTagName('body')[0].scrollHeight
+      }).then(canvas => {
+        if(navigator.share){
+            canvas.toBlob(blob => {
+            const image = new File([blob], 'tmp.png', {type: 'image/png'});
+            navigator.share({
+              text: '今回の結果',
+              url: '',
+              files: [image]
+            }).then(() => {
+              console.log('Share was successful.')
+            }).catch((error) => {
+              console.log('Sharing failed', error)
+            });
           });
-        });
+        } else {
+          document.body.appendChild(canvas);
+          document.getElementById("share").style.display ="block";
+        }
       });
     },
     CanShare: function () {
