@@ -10,7 +10,7 @@
           >
             <template v-slot:activator="{ on }">
               <v-combobox
-                v-model="computedDateFormatted"
+                v-model="dateFormatted"
                 prepend-icon="event"
                 readonly
                 v-on="on"
@@ -24,22 +24,26 @@
             <template v-slot:default>
               <thead>
                 <tr>
-                  <th class="text-left" width="100" style="white-space: nowrap">Name</th>
-                  <th class="text-left" width="200">Score</th>
+                  <th class="text-left" width="200" style="white-space: nowrap">Name</th>
+                  <th class="text-left">Score</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
+                <tr v-for="i in index">
                   <td>
                     <v-select
                       :items="users"
-                      v-model="selectedUser"
-                      return-object
+                      v-model="selectedUser[i-1]"
                       v-on:change=""
                     ></v-select>
                   </td>
                   <td>
-                    <div v-bind:style="{width:'100%'}">bbbbbbbbbsbbbbbvvbbbbbbbbbbbbbbbb</div>
+                    <v-text-field v-model="resultScores[i-1]" v-bind:style="{width:'100%'}" type="number"></v-text-field>
+                  </td>
+                  <td width="44">
+                    <v-btn text icon v-if="i == index" v-on:click="removeBtnAction">
+                      <v-icon>remove_circle</v-icon>
+                    </v-btn>
                   </td>
                 </tr>
               </tbody>
@@ -47,7 +51,55 @@
           </v-simple-table>
         </v-col>
       </v-row>
+      <v-dialog
+        v-model="dialog"
+        >
+        <v-card>
+          <v-card-title class="headline">新規登録</v-card-title>
+          <v-card-text>Name</v-card-text>
+          <v-text-field v-model="addUserLabel" class="d-flex px-6"></v-text-field>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+              text
+              color="error"
+              @click="dialogCancel()"
+              >Cancel</v-btn>
+            <v-btn
+              text
+              color="success"
+              @click="userAddBtn"
+              >ADD</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      <v-dialog
+        v-model="registDialog"
+        >
+        <v-card>
+          <v-card-title class="headline">登録完了</v-card-title>
+          <v-card-text>新しいデータを記録しました</v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+              text
+              color="success"
+              @click="okBtnAction"
+              >OK</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-container>
+    <v-container id="add">
+      <v-layout :class="">
+        <v-flex class="px-10">
+          <v-btn color="primary" v-on:click="addBtnAction" block>追加</v-btn>
+        </v-flex>
+        <v-flex class="px-10">
+          <v-btn color="success" v-on:click="registerBtnAction" block>登録</v-btn>
+        </v-flex>
+      </v-layout>
+  </v-container>
   </v-content>
 </template>
 
@@ -57,14 +109,20 @@ export default {
       date: new Date().toLocaleDateString().substr(0, 10),
       dateFormatted: vm.formatDate(new Date().toLocaleDateString().substr(0, 10)),
       menu2: false,
-      users:['123','456','789'],
-      selectedUser:'123',
+      users:[],
+      selectedUser:[],
       datePicker:vm.formatDatePicker(),
+      label:'',
+      index:1,
+      dialog:false,
+      selectedUserIndex:0,
+      addUserLabel:'',
+      resultScores:[],
+      registDialog:false
   }),
 
   computed: {
     computedDateFormatted () {
-      console.log("computedDateFormatted");
       return this.formatDate(this.date)
     },
   },
@@ -72,22 +130,84 @@ export default {
     date (val) {
       this.dateFormatted = this.formatDate(this.date)
     },
+    datePicker(val){
+      const [year, month, day] = val.split('-')
+      const d = new Date(year,month-1, day);
+      this.dateFormatted = this.formatDate(d.toLocaleDateString().substr(0, 10));
+    },
+    selectedUser(value){
+      this.selectedUserIndex = this.selectedUser.indexOf('新規作成');
+      if (this.selectedUserIndex >= 0) {
+        this.selectedUser.splice(this.selectedUserIndex, 1, '');
+        this.dialog = true;
+      }
+    },
   },
   mounted(){
+    const result = this.$localStorage.get('resultOfDate');
+    console.log(result);
+    this.users = result.reduce((prev, curr) => {
+      const names = curr.result.reduce((_prev, _curr) => {
+        _prev.push(_curr.name);
+        return _prev;
+      }, []);
+      prev = prev.concat(names.filter(name => prev.indexOf(name) == -1));
+      return prev;
+    },[]).concat(['新規作成']);
   },
   methods:{
     formatDate (date) {
-      if (!date) return null
+      if (!date) return null;
       const [year, month, day] = date.split('/')
 
       const d = new Date(year,month-1, day);
-      console.log(new Date().toLocaleDateString().substr(0, 10));
       const WeekChars = [ "日", "月", "火", "水", "木", "金", "土" ];
       return `${year}/${month}/${day} (${WeekChars[d.getDay()]})`
     },
     formatDatePicker(){
       const [year, month, day] = new Date().toLocaleDateString().substr(0, 10).split('/');
       return `${year}-${month}-${day}`;
+    },
+    addBtnAction(){
+      this.index++;
+      this.selectedUser.length++;
+      this.resultScores.length++;
+    },
+    removeBtnAction(){
+      if (this.index != 1) {
+        this.index--;
+        this.selectedUser.length--;
+        this.resultScores.length--;
+      }
+    },
+    userAddBtn(){
+      this.users.splice(this.users.length-1, 1, this.addUserLabel);
+      this.users.push('新規作成');
+      this.selectedUser.splice(this.selectedUserIndex, 1, this.addUserLabel);
+      this.selectedUserIndex = 0;
+      this.dialog=false;
+      this.addUserLabel = '';
+    },
+    dialogCancel(){
+      this.addUserLabel = '';
+      this.selectedUserIndex = 0;
+      this.dialog=false;
+    },
+    registerBtnAction(){
+      const todayResult = {
+        date:this.datePicker.replace(/-/g,'/'),
+        result:this.selectedUser.map((user, index) => {
+          return {name:user, score:parseInt(this.resultScores[index])};
+        })
+      };
+      const result = this.$localStorage.get('resultOfDate');
+      result.concat(todayResult);
+      this.$localStorage.set('resultOfDate', result.concat(todayResult));
+      this.registDialog = true;
+    },
+    okBtnAction(){
+      this.registDialog = false;
+      this.$router.back();
     }
   }
 }

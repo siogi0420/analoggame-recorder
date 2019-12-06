@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/analoggame-recorder/precache-manifest.e64a3a68764a95b98ffbe0cf07a115fc.js"
+  "/analoggame-recorder/precache-manifest.b595d18675461b76ddae4bd997948402.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "analoggame-recorder"});
