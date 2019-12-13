@@ -2,22 +2,14 @@
   <v-content>
     <v-container id="">
       <v-row align="center">
-        <v-col class="d-flex px-4" cols="12" sm="6">
-          <v-menu
-            v-model="menu2"
-            :close-on-content-click="false"
-            transition="scale-transition"
-          >
-            <template v-slot:activator="{ on }">
-              <v-combobox
-                v-model="dateFormatted"
-                prepend-icon="event"
-                readonly
-                v-on="on"
-              ></v-combobox>
-            </template>
-            <v-date-picker locale="jp-ja" v-model="datePicker" no-title @input="menu2 = false" :day-format="date => new Date(date).getDate()"></v-date-picker>
-          </v-menu>
+        <v-col class="d-flex" cols="12" sm="6">
+          <v-select
+            :items="gameDates"
+            v-model="selectedDate"
+            return-object
+            v-on:change=""
+            prepend-icon="event"
+          ></v-select>
         </v-col>
         <v-col class="d-flex px-2" cols="12" sm="6">
           <v-simple-table fixed-header height="auto" width="100%">
@@ -77,8 +69,8 @@
         v-model="registDialog"
         >
         <v-card>
-          <v-card-title class="headline">登録完了</v-card-title>
-          <v-card-text>新しいデータを記録しました</v-card-text>
+          <v-card-title class="headline">編集完了</v-card-title>
+          <v-card-text>データを保存しました</v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn
@@ -92,11 +84,11 @@
     </v-container>
     <v-container id="add">
       <v-layout :class="">
-        <v-flex class="px-10">
-          <v-btn color="primary" v-on:click="addBtnAction" block>追加</v-btn>
+        <v-flex class="px-6">
+          <v-btn color="primary" v-on:click="addBtnAction" block>ユーザー追加</v-btn>
         </v-flex>
         <v-flex class="px-10">
-          <v-btn color="success" v-on:click="registerBtnAction" block>登録</v-btn>
+          <v-btn color="success" v-on:click="registerBtnAction" block>データ保存</v-btn>
         </v-flex>
       </v-layout>
   </v-container>
@@ -106,35 +98,24 @@
 <script>
 export default {
   data: vm => ({
-      date: new Date().toLocaleDateString().substr(0, 10),
-      dateFormatted: vm.formatDate(new Date().toLocaleDateString().substr(0, 10)),
-      menu2: false,
       users:[],
       selectedUser:[],
-      datePicker:vm.formatDatePicker(),
       label:'',
       index:1,
       dialog:false,
       selectedUserIndex:0,
       addUserLabel:'',
       resultScores:[],
-      registDialog:false
+      registDialog:false,
+      gameDates:[],
+      selectedDate:'',
+      dateIndex:0,
+      resultAll:[]
   }),
 
   computed: {
-    computedDateFormatted () {
-      return this.formatDate(this.date)
-    },
   },
   watch: {
-    date (val) {
-      this.dateFormatted = this.formatDate(this.date)
-    },
-    datePicker(val){
-      const [year, month, day] = val.split('-')
-      const d = new Date(year,month-1, day);
-      this.dateFormatted = this.formatDate(d.toLocaleDateString().substr(0, 10));
-    },
     selectedUser(value){
       this.selectedUserIndex = this.selectedUser.indexOf('新規作成');
       if (this.selectedUserIndex >= 0) {
@@ -142,11 +123,19 @@ export default {
         this.dialog = true;
       }
     },
+    selectedDate(value){
+      this.dateIndex = this.gameDates.indexOf(value);
+      console.log(this.dateIndex);
+      this.selectedDate = this.gameDates[this.dateIndex];
+      this.selectedUser = this.resultAll[this.dateIndex].result.map(result => result.name);
+      this.resultScores = this.resultAll[this.dateIndex].result.map(result => result.score);
+      this.index = this.selectedUser.length;
+    }
   },
   mounted(){
-    const result = this.$localStorage.get('resultOfDate');
-    console.log(result);
-    this.users = result.reduce((prev, curr) => {
+    this.resultAll = this.$localStorage.get('resultOfDate');
+    console.log(this.resultAll);
+    this.users = this.resultAll.reduce((prev, curr) => {
       const names = curr.result.reduce((_prev, _curr) => {
         _prev.push(_curr.name);
         return _prev;
@@ -154,20 +143,14 @@ export default {
       prev = prev.concat(names.filter(name => prev.indexOf(name) == -1));
       return prev;
     },[]).concat(['新規作成']);
+    this.gameDates = this.resultAll.map(result => result.date);
+    this.dateIndex = 0;
+    this.selectedDate = this.gameDates[this.dateIndex];
+    this.selectedUser = this.resultAll[this.dateIndex].result.map(result => result.name);
+    this.resultScores = this.resultAll[this.dateIndex].result.map(result => result.score);
+    this.index = this.selectedUser.length;
   },
   methods:{
-    formatDate (date) {
-      if (!date) return null;
-      const [year, month, day] = date.split('/')
-
-      const d = new Date(year,month-1, day);
-      const WeekChars = [ "日", "月", "火", "水", "木", "金", "土" ];
-      return `${year}/${month}/${day} (${WeekChars[d.getDay()]})`
-    },
-    formatDatePicker(){
-      const [year, month, day] = new Date().toLocaleDateString().substr(0, 10).split('/');
-      return `${year}-${month}-${day}`;
-    },
     addBtnAction(){
       this.index++;
       this.selectedUser.length++;
@@ -194,15 +177,15 @@ export default {
       this.dialog=false;
     },
     registerBtnAction(){
-      const todayResult = {
-        date:this.datePicker.replace(/-/g,'/'),
+      const editResult = {
+        date:this.selectedDate,
         result:this.selectedUser.map((user, index) => {
           return {name:user, score:parseInt(this.resultScores[index])};
         })
       };
       const result = this.$localStorage.get('resultOfDate');
-      result.concat(todayResult);
-      this.$localStorage.set('resultOfDate', result.concat(todayResult));
+      result[this.dateIndex] = editResult;
+      this.$localStorage.set('resultOfDate', result);
       this.registDialog = true;
     },
     okBtnAction(){

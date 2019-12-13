@@ -1,20 +1,32 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../components/Main.vue'
+import Top from '../components/Top.vue'
 import Input from '../components/Input.vue'
+import Edit from '../components/Edit.vue'
+import Ranking from '../components/Main.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
-    name: 'home',
-    component: Home
+    name: 'Top',
+    component: Top
   },
   {
     path: '/Input',
     name: 'Input',
     component: Input
+  },
+  {
+    path: '/Edit',
+    name: 'Edit',
+    component: Edit
+  },
+  {
+    path:'/Main',
+    name:'Main',
+    component:Ranking
   }
 ]
 

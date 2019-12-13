@@ -2,14 +2,14 @@
 	<v-container>
 		<v-row align="center">
 			<v-col class="d-flex" cols="12" sm="6">
-        		<v-select
-          			:items="gameDates"
-           			v-model="selectedDate"
-           			return-object
-           			v-on:change=""
-        		></v-select>
-      		</v-col>
-     	</v-row>
+     		<v-select
+     			:items="gameDates"
+     			v-model="selectedDate"
+     			return-object
+     			v-on:change=""
+     		></v-select>
+    	</v-col>
+    </v-row>
 		<v-simple-table fixed-header height="auto" v-if="resultOfDate">
 			<template v-slot:default>
 				<thead>
@@ -40,10 +40,12 @@ export default {
 			selectedDate: '総合',
 			resultOfDate:'',
 			gameDates:[],
+      tournament:''
 		}
 	},
 	mounted(){
-		const result = this.$localStorage.get('resultOfDate');
+    this.tournament = this.$route.params.tournament;
+		const result = this.$localStorage.get(this.tournament, []);
     this.resultOfDate = getAllResult(result).concat(result);
     sortResult(this.resultOfDate);
     this.gameDates = this.resultOfDate.map(result => result.date);
