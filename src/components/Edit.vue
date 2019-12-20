@@ -48,7 +48,7 @@
         >
         <v-card>
           <v-card-title class="headline">新規登録</v-card-title>
-          <v-card-text>Name</v-card-text>
+          <v-card-text>名前を入力してください</v-card-text>
           <v-text-field v-model="addUserLabel" class="d-flex px-6"></v-text-field>
           <v-card-actions>
             <v-spacer></v-spacer>
@@ -56,12 +56,12 @@
               text
               color="error"
               @click="dialogCancel()"
-              >Cancel</v-btn>
+              >キャンセル</v-btn>
             <v-btn
               text
               color="success"
               @click="userAddBtn"
-              >ADD</v-btn>
+              >追加</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
