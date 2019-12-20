@@ -134,7 +134,7 @@ export default {
       dateFormatted: vm.formatDate(new Date().toLocaleDateString().substr(0, 10)),
       menu2: false,
       users:[],
-      selectedUser:[],
+      selectedUser:[''],
       datePicker:vm.formatDatePicker(),
       label:'',
       index:1,
@@ -199,7 +199,7 @@ export default {
     },
     addBtnAction(){
       this.index++;
-      this.selectedUser.length++;
+      this.selectedUser.push('');
       this.resultScores.push(0);
     },
     removeBtnAction(){
@@ -229,15 +229,17 @@ export default {
           return {name:user, score:parseInt(this.resultScores[index])};
         })
       };
-      if (this.gameDates.indexOf(todayResult.date) == -1) {
-        const result = JSON.parse(this.$localStorage.get(this.tournament, '[]'));
-        this.$localStorage.set(this.tournament, JSON.stringify(result.concat(todayResult)));
-        this.registDialog = true;
+      if (this.gameDates.indexOf(todayResult.date) == -1 && todayResult.result.length != 0) {
+        if (todayResult.result && todayResult.result.every(val => val.name != '' && !Number.isNaN(val.score))){
+          const result = JSON.parse(this.$localStorage.get(this.tournament, '[]'));
+          this.$localStorage.set(this.tournament, JSON.stringify(result.concat(todayResult)));
+          this.registDialog = true;
+        } else {
+          this.errorDialog = true;
+        }
       } else {
-        //error!
         this.errorDialog = true;
       }
-
     },
     okBtnAction(){
       this.registDialog = false;

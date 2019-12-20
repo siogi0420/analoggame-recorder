@@ -81,6 +81,23 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
+      <v-dialog
+        v-model="errorDialog"
+        >
+        <v-card>
+          <v-card-title class="headline">登録失敗</v-card-title>
+          <v-card-text>データが正しくありません</v-card-text>
+          <v-card-text>日付やデータがすべて入力されているか確認してください</v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+              text
+              color="error"
+              @click="errorDialog = false"
+              >OK</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-container>
     <v-container id="add">
       <v-layout :class="">
@@ -99,19 +116,20 @@
 export default {
   data: vm => ({
       users:[],
-      selectedUser:[],
+      selectedUser:[''],
       label:'',
       index:1,
       dialog:false,
       selectedUserIndex:0,
       addUserLabel:'',
-      resultScores:[],
+      resultScores:[0],
       registDialog:false,
       gameDates:[],
       selectedDate:'',
       dateIndex:0,
       resultAll:[],
       tournament:'',
+      errorDialog:false,
   }),
 
   computed: {
@@ -154,8 +172,8 @@ export default {
   methods:{
     addBtnAction(){
       this.index++;
-      this.selectedUser.length++;
-      this.resultScores.length++;
+      this.selectedUser.push('');
+      this.resultScores.push(0);
     },
     removeBtnAction(){
       if (this.index != 1) {
@@ -184,10 +202,18 @@ export default {
           return {name:user, score:parseInt(this.resultScores[index])};
         })
       };
-      const result = JSON.parse(this.$localStorage.get(this.tournament, '[]'));
-      result[this.dateIndex] = editResult;
-      this.$localStorage.set(this.tournament, JSON.stringify(result));
-      this.registDialog = true;
+      if (editResult.result.length != 0) {
+        if (editResult.result && editResult.result.every(val => val.name != '' && !Number.isNaN(val.score))){
+          const result = JSON.parse(this.$localStorage.get(this.tournament, '[]'));
+          result[this.dateIndex] = editResult;
+          this.$localStorage.set(this.tournament, JSON.stringify(result));
+          this.registDialog = true;
+        } else {
+          this.errorDialog = true;
+        }
+      } else {
+        this.errorDialog = true;
+      }
     },
     okBtnAction(){
       this.registDialog = false;
