@@ -16,7 +16,14 @@
                 v-on="on"
               ></v-combobox>
             </template>
-            <v-date-picker locale="jp-ja" v-model="datePicker" no-title @input="menu2 = false" :day-format="date => new Date(date).getDate()"></v-date-picker>
+            <v-date-picker
+              locale="jp-ja"
+              v-model="datePicker"
+              no-title @input="menu2 = false"
+              :day-format="date => new Date(date).getDate()"
+              :allowed-dates="allowedDates"
+              >
+              </v-date-picker>
           </v-menu>
         </v-col>
         <v-col class="d-flex px-2" cols="12" sm="6">
@@ -89,6 +96,23 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
+      <v-dialog
+        v-model="errorDialog"
+        >
+        <v-card>
+          <v-card-title class="headline">登録失敗</v-card-title>
+          <v-card-text>データが正しくありません</v-card-text>
+          <v-card-text>日付やデータがすべて入力されているか確認してください</v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+              text
+              color="error"
+              @click="errorDialog = false"
+              >OK</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-container>
     <v-container id="add">
       <v-layout :class="">
@@ -117,9 +141,11 @@ export default {
       dialog:false,
       selectedUserIndex:0,
       addUserLabel:'',
-      resultScores:[],
+      resultScores:[0],
       registDialog:false,
       tournament:'',
+      gameDates:[],
+      errorDialog:false,
   }),
 
   computed: {
@@ -155,6 +181,8 @@ export default {
       prev = prev.concat(names.filter(name => prev.indexOf(name) == -1));
       return prev;
     },[]).concat(['新規作成']);
+
+    this.gameDates = result.map(result => result.date);
   },
   methods:{
     formatDate (date) {
@@ -172,7 +200,7 @@ export default {
     addBtnAction(){
       this.index++;
       this.selectedUser.length++;
-      this.resultScores.length++;
+      this.resultScores.push(0);
     },
     removeBtnAction(){
       if (this.index != 1) {
@@ -201,13 +229,26 @@ export default {
           return {name:user, score:parseInt(this.resultScores[index])};
         })
       };
-      const result = JSON.parse(this.$localStorage.get(this.tournament, '[]'));
-      this.$localStorage.set(this.tournament, JSON.stringify(result.concat(todayResult)));
-      this.registDialog = true;
+      if (this.gameDates.indexOf(todayResult.date) == -1) {
+        const result = JSON.parse(this.$localStorage.get(this.tournament, '[]'));
+        this.$localStorage.set(this.tournament, JSON.stringify(result.concat(todayResult)));
+        this.registDialog = true;
+      } else {
+        //error!
+        this.errorDialog = true;
+      }
+
     },
     okBtnAction(){
       this.registDialog = false;
       this.$router.replace({name:'Main' ,params:{tournament:this.tournament}});
+    },
+    allowedDates(val){
+      if (this.gameDates.indexOf(val.replace(/-/g,'/')) == -1) {
+        return true;
+      } else {
+        false;
+      }
     }
   }
 };

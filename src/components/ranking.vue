@@ -88,6 +88,7 @@ const sortResult = (result) => {
 	result.map(resultOfDate => {
 		resultOfDate.result = resultOfDate.result.sort((a, b) => b.score - a.score);
 	});
+  return
 }
 
 </script>
