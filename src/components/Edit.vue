@@ -110,7 +110,8 @@ export default {
       gameDates:[],
       selectedDate:'',
       dateIndex:0,
-      resultAll:[]
+      resultAll:[],
+      tournament:'',
   }),
 
   computed: {
@@ -133,8 +134,8 @@ export default {
     }
   },
   mounted(){
-    this.resultAll = this.$localStorage.get('resultOfDate');
-    console.log(this.resultAll);
+    this.tournament = this.$route.params.tournament;
+    this.resultAll = JSON.parse(this.$localStorage.get(this.tournament, '[]'));
     this.users = this.resultAll.reduce((prev, curr) => {
       const names = curr.result.reduce((_prev, _curr) => {
         _prev.push(_curr.name);
@@ -183,14 +184,14 @@ export default {
           return {name:user, score:parseInt(this.resultScores[index])};
         })
       };
-      const result = this.$localStorage.get('resultOfDate');
+      const result = JSON.parse(this.$localStorage.get(this.tournament, '[]'));
       result[this.dateIndex] = editResult;
-      this.$localStorage.set('resultOfDate', result);
+      this.$localStorage.set(this.tournament, JSON.stringify(result));
       this.registDialog = true;
     },
     okBtnAction(){
       this.registDialog = false;
-      this.$router.back();
+      this.$router.replace({name:'Main' ,params:{tournament:this.tournament}});
     }
   }
 };

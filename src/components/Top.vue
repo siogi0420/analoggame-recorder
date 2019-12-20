@@ -10,7 +10,10 @@
         ></v-img>
       </v-row>
       <v-row align="center" justify="center" class="pt-6 px-8">
-        <p align="center">ゲーム大会の結果を記録することができます<br>記録は開催会別に日付ごとに記録できます</p>
+        <p align="center">ゲーム大会の結果を記録することができます<br>
+            記録は開催会別に日付ごとに点数を保存できます<br>
+            順位では記録できませんが、順位に応じた点数を記録することで、疑似的に記録することもできます
+        </p>
       </v-row>
       <v-row align="center" justify="center">
         <v-col class="px-6">
@@ -26,7 +29,7 @@
             color="primary"
             block
             v-bind:disabled="tournaments.length == 0"
-            @click="">選択</v-btn>
+            @click="openTournament">選択</v-btn>
         </v-col>
       </v-row>
       <v-row align="center" justify="center">
@@ -43,7 +46,7 @@
             color="secondary"
             block
             v-bind:disabled="tournaments.length == 0"
-            @click="">データ削除</v-btn>
+            @click="deleteBtnAction">データ削除</v-btn>
         </v-col>
       </v-row>
       <v-dialog
@@ -61,6 +64,49 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
+      <v-dialog
+        v-model="deleteDialog"
+        >
+        <v-card>
+          <v-card-title class="headline">大会削除</v-card-title>
+          <v-select
+            :items="tournaments"
+            v-model="deleteTournamentName"
+            return-object
+            v-on:change=""
+            prepend-icon="casino"
+            v-bind:disabled="tournaments.length == 0"
+            class="px-6"
+          ></v-select>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+              color="error"
+              @click="deleteTournament"
+              >削除</v-btn>
+            <v-btn
+              color="warning"
+              @click="deleteCancel"
+              >キャンセル</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      <v-dialog
+        v-model="deletedDataDialog"
+        >
+        <v-card>
+          <v-card-title class="headline">削除完了</v-card-title>
+          <v-card-text>大会「{{ this.deleteTournamentName }}」を削除しました</v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+              text
+              color="success"
+              @click="okBtnAction"
+              >OK</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-container>
   </v-content>
 </template>
@@ -75,13 +121,23 @@ export default {
       selectedTournament:'',
       create:false,
       newTournament:'',
+      deleteDialog:false,
+      deleteTournamentName:'',
+      deletedDataDialog: false,
     }
   },
   mounted(){
     this.tournaments = this.$localStorage.get('TournamentList', []);
-    console.log(this.tournaments)
     if (this.tournaments.length != 0) {
       this.selectedTournament = this.tournaments[0];
+    }
+  },
+  watch:{
+    deleteDialog(){
+      if (!this.deletedDataDialog) {
+        this.deleteTournamentName = '';
+      }
+
     }
   },
   methods:{
@@ -93,11 +149,27 @@ export default {
     },
     createAction(){
       this.create = false;
-      console.log(this.newTournament);
       this.tournaments.push(this.newTournament);
-      console.log(this.tournaments);
       this.$localStorage.set('TournamentList', this.tournaments);
-      this.$router.push({name:'Main', params:{ newTournament: this.newTournament }});
+      this.$router.push({name:'Main', params:{ tournament: this.newTournament, newTournament:true }});
+    },
+    deleteBtnAction(){
+      this.deleteDialog = true;
+    },
+    deleteCancel(){
+      this.deleteDialog = false;
+    },
+    deleteTournament(){
+      this.tournaments = this.tournaments.filter(tournament => tournament != this.deleteTournamentName);
+      this.$localStorage.set('TournamentList', this.tournaments);
+      this.deleteDialog = false;
+      if (this.deleteTournamentName != '') {
+        this.deletedDataDialog = true;
+      }
+    },
+    okBtnAction(){
+      this.deletedDataDialog = false;
+      this.deleteTournamentName = '';
     }
   }
 };

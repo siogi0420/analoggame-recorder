@@ -118,7 +118,8 @@ export default {
       selectedUserIndex:0,
       addUserLabel:'',
       resultScores:[],
-      registDialog:false
+      registDialog:false,
+      tournament:'',
   }),
 
   computed: {
@@ -144,8 +145,8 @@ export default {
     },
   },
   mounted(){
-    const result = this.$localStorage.get('resultOfDate');
-    console.log(result);
+    this.tournament = this.$route.params.tournament;
+    const result = JSON.parse(this.$localStorage.get(this.tournament, '[]'));
     this.users = result.reduce((prev, curr) => {
       const names = curr.result.reduce((_prev, _curr) => {
         _prev.push(_curr.name);
@@ -200,14 +201,13 @@ export default {
           return {name:user, score:parseInt(this.resultScores[index])};
         })
       };
-      const result = this.$localStorage.get('resultOfDate');
-      result.concat(todayResult);
-      this.$localStorage.set('resultOfDate', result.concat(todayResult));
+      const result = JSON.parse(this.$localStorage.get(this.tournament, '[]'));
+      this.$localStorage.set(this.tournament, JSON.stringify(result.concat(todayResult)));
       this.registDialog = true;
     },
     okBtnAction(){
       this.registDialog = false;
-      this.$router.back();
+      this.$router.replace({name:'Main' ,params:{tournament:this.tournament}});
     }
   }
 };

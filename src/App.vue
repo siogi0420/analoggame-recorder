@@ -19,7 +19,11 @@
         />
         </router-link>
       </div>
-      <v-spacer></v-spacer>
+      <v-spacer>
+        <div align="center" justify="center" color="secondary">
+          {{this.pageTitle}}
+        </div>
+      </v-spacer>
       <div class="d-flex justify-end">
         <v-img
           v-if="this.$route.path == '/Main'"
@@ -36,7 +40,7 @@
           alt="write icon"
           src="./assets/close_icon.png"
           transition="scale-transition"
-          width="24"
+          width="30"
           contain
           id="writeIcon"
           v-on:click="back">
@@ -77,6 +81,7 @@ export default {
     return {
       edit:false,
       newData:false,
+      pageTitle:''
     }
   },
   mounted(){
@@ -84,9 +89,17 @@ export default {
   },
   watch: {
     $route(to,from){
-      console.log(to);
       if(to.params.newTournament){
         this.newData = true;
+      } else {
+        this.newData = false;
+      }
+      if(this.$route.path == '/'){
+        this.pageTitle = 'AnalogGame Recorder';
+      } else {
+        if(this.$route.params.tournament){
+          this.pageTitle = this.$route.params.tournament;
+        }
       }
     }
   },
@@ -95,7 +108,8 @@ export default {
       this.edit = true;
     },
     back:function(){
-      this.$router.back();
+      console.log(this.$route.params.tournament);
+      this.$router.push({name:'Main', params:{ tournament: this.$route.params.tournament }});
     },
     createAction(){
       this.edit = false;
@@ -103,6 +117,8 @@ export default {
     },
     editAction(){
       this.edit = false;
+      console.log("edit action");
+      console.log(this.$route.params.tournament);
       this.$router.push({name:'Edit', params:{tournament:this.$route.params.tournament}});
     },
     returnTop(){

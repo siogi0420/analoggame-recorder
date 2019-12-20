@@ -45,7 +45,7 @@ export default {
 	},
 	mounted(){
     this.tournament = this.$route.params.tournament;
-		const result = this.$localStorage.get(this.tournament, []);
+		const result = JSON.parse(this.$localStorage.get(this.tournament, '[]'));
     this.resultOfDate = getAllResult(result).concat(result);
     sortResult(this.resultOfDate);
     this.gameDates = this.resultOfDate.map(result => result.date);
