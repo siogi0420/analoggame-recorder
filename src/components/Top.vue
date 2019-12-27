@@ -172,6 +172,7 @@ export default {
     }
     if (this.$route.query.share_data) {
       this.registData = this.$route.query.share_data;
+      this.registDataKey = this.$route.query.share_key;
       this.registDialog = true;
     }
   },
