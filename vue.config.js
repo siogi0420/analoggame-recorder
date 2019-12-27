@@ -13,6 +13,5 @@ module.exports = {
     short_name: 'AnalogGameReco'
   },
   publicPath: '/analoggame-recorder',
-  filenameHashing: false,
   productionSourceMap: false,
 }
