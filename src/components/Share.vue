@@ -1,8 +1,26 @@
 <template>
   <v-container id="share">
     <div v-if="CanShare() == true">
-      <v-btn color="primary" v-on:click="ShareAction" block>共有</v-btn>
+      <v-btn color="primary" v-on:click="dialog = true" block>共有</v-btn>
     </div>
+    <v-dialog
+        v-model="dialog"
+        >
+        <v-card>
+          <v-card-title class="headline">共有</v-card-title>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+              color="primary"
+              @click="ShareAction"
+              >画像を共有</v-btn>
+            <v-btn
+              color="success"
+              @click="DataShare"
+              >データを共有</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
   </v-container>
 </template>
 
@@ -12,12 +30,14 @@ import html2canvas from 'html2canvas';
 export default {
   data () {
     return {
+      dialog:false,
     }
   },
   mounted(){
   },
   methods:{
     ShareAction: function() {
+      this.dialog = false;
       var paddingTop = parseInt(document.getElementById("ranking").style.paddingTop);
       var padd = document.getElementById("ranking").style.paddingTop;
       var height = paddingTop + document.getElementById("ranking").clientHeight;
@@ -55,7 +75,31 @@ export default {
         return true;
         // return false;
       }
-    }
+    },
+    DataShare(){
+      this.dialog = false;
+      const result = this.$localStorage.get(this.$route.params.tournament, '[]');
+      console.log(`https://siogi0420.github.io/analoggame-recorder/?share_key=${deflate(this.$route.params.tournament)}&share_data=${deflate(result)}`);
+      if(navigator.share){
+        canvas.toBlob(blob => {
+          navigator.share({
+            text: `https://siogi0420.github.io/analoggame-recorder/?share_key=${deflate(this.$route.params.tournament)}&share_data=${deflate(result)}`,
+            url: '',
+          }).then(() => {
+            console.log('Share was successful.')
+          }).catch((error) => {
+            console.log('Sharing failed', error)
+          });
+        });
+      }
+    },
   }
+}
+function deflate(val) {
+    val = encodeURIComponent(val); // UTF16 → UTF8
+    val = RawDeflate.deflate(val); // 圧縮
+    val = btoa(val); // base64エンコード
+    val = encodeURIComponent(val);
+    return val;
 }
 </script>

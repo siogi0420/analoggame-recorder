@@ -107,6 +107,41 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
+      <v-dialog
+        v-model="registDialog"
+        >
+        <v-card>
+          <v-card-title class="headline">データ登録</v-card-title>
+          <v-card-text>共有された記録を保存しますか？</v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+              color="warning"
+              @click="registDialog = false"
+              >キャンセル</v-btn>
+            <v-btn
+              color="success"
+              @click="registerBtnAction()"
+              >保存する</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      <v-dialog
+        v-model="registedDialog"
+        >
+        <v-card>
+          <v-card-title class="headline">登録完了</v-card-title>
+          <v-card-text>データを保存しました</v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+              text
+              color="success"
+              @click="registedDialog = false"
+              >OK</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-container>
   </v-content>
 </template>
@@ -124,6 +159,10 @@ export default {
       deleteDialog:false,
       deleteTournamentName:'',
       deletedDataDialog: false,
+      registDialog:false,
+      registData:'',
+      registDataKey:'',
+      registedDialog:false,
     }
   },
   mounted(){
@@ -131,13 +170,16 @@ export default {
     if (this.tournaments.length != 0) {
       this.selectedTournament = this.tournaments[0];
     }
+    if (this.$route.query.share_data) {
+      this.registData = this.$route.query.share_data;
+      this.registDialog = true;
+    }
   },
   watch:{
     deleteDialog(){
       if (!this.deletedDataDialog) {
         this.deleteTournamentName = '';
       }
-
     }
   },
   methods:{
@@ -170,9 +212,24 @@ export default {
     okBtnAction(){
       this.deletedDataDialog = false;
       this.deleteTournamentName = '';
+    },
+    registerBtnAction(){
+      this.registDialog = false;
+      console.log(inflate(this.registData));
+      console.log(inflate(this.registDataKey));
+      this.$localStorage.set(this.registDataKey, this.registData);
+      this.registedDialog = true;
     }
   }
 };
+
+function inflate(val) {
+    val = decodeURIComponent(val);
+    val = atob(val); // base64デコード
+    val = RawDeflate.inflate(val); // 復号
+    val = decodeURIComponent(val); // UTF8 → UTF16
+    return val;
+}
 </script>
 <style scoped>
 

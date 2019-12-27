@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "aacd095eb116c9c86881",
+    "revision": "506f4d8c863f696578f4",
     "url": "/analoggame-recorder/css/app.css"
   },
   {
-    "revision": "edf4749532f3dce0ba03",
+    "revision": "4526e6b52f02356d60a9",
     "url": "/analoggame-recorder/css/chunk-vendors.css"
   },
   {
@@ -20,15 +20,15 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/analoggame-recorder/img/logo.png"
   },
   {
-    "revision": "5536589ae2cb0d98709031550bedc321",
+    "revision": "dddc5f30750e4763d76ee88f250792f0",
     "url": "/analoggame-recorder/index.html"
   },
   {
-    "revision": "aacd095eb116c9c86881",
+    "revision": "506f4d8c863f696578f4",
     "url": "/analoggame-recorder/js/app.js"
   },
   {
-    "revision": "edf4749532f3dce0ba03",
+    "revision": "4526e6b52f02356d60a9",
     "url": "/analoggame-recorder/js/chunk-vendors.js"
   },
   {
