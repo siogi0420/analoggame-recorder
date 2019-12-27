@@ -81,15 +81,12 @@ export default {
       const result = this.$localStorage.get(this.$route.params.tournament, '[]');
       console.log(`https://siogi0420.github.io/analoggame-recorder/?share_key=${deflate(this.$route.params.tournament)}&share_data=${deflate(result)}`);
       if(navigator.share){
-        canvas.toBlob(blob => {
-          navigator.share({
-            text: `https://siogi0420.github.io/analoggame-recorder/?share_key=${deflate(this.$route.params.tournament)}&share_data=${deflate(result)}`,
-            url: '',
-          }).then(() => {
-            console.log('Share was successful.')
-          }).catch((error) => {
-            console.log('Sharing failed', error)
-          });
+        navigator.share({
+          url: `https://siogi0420.github.io/analoggame-recorder/?share_key=${deflate(this.$route.params.tournament)}&share_data=${deflate(result)}`
+        }).then(() => {
+          console.log('Share was successful.')
+        }).catch((error) => {
+          console.log('Sharing failed', error)
         });
       }
     },
