@@ -216,9 +216,14 @@ export default {
     },
     registerBtnAction(){
       this.registDialog = false;
+      const tournamentName = inflate(this.registDataKey);
       console.log(inflate(this.registData));
-      console.log(inflate(this.registDataKey));
-      this.$localStorage.set(this.registDataKey, this.registData);
+      console.log(tournamentName);
+      this.$localStorage.set(tournamentName, inflate(this.registData));
+      if(this.tournaments.indexOf(tournamentName) == -1){
+        this.tournaments.push(tournamentName);
+        this.$localStorage.set('TournamentList', this.tournaments);
+      }
       this.registedDialog = true;
     }
   }

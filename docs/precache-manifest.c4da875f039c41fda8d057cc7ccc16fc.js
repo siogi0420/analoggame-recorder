@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "11ae234ff8118e320716",
+    "revision": "ee36a9eaa10a2071eb19",
     "url": "/analoggame-recorder/css/app.d8614446.css"
   },
   {
@@ -20,12 +20,12 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/analoggame-recorder/img/logo.0993262f.png"
   },
   {
-    "revision": "7460feef3d9d98f3a152b3c0daf85227",
+    "revision": "a34cf64f0d12069b08842d092979dff5",
     "url": "/analoggame-recorder/index.html"
   },
   {
-    "revision": "11ae234ff8118e320716",
-    "url": "/analoggame-recorder/js/app.d5978ff3.js"
+    "revision": "ee36a9eaa10a2071eb19",
+    "url": "/analoggame-recorder/js/app.2255f1e9.js"
   },
   {
     "revision": "4526e6b52f02356d60a9",
