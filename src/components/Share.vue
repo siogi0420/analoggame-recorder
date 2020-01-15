@@ -5,7 +5,6 @@
     </div>
     <v-dialog
         v-model="dialog"
-        id="dialog"
         >
         <v-card>
           <v-card-title class="headline">共有</v-card-title>
@@ -47,7 +46,7 @@ export default {
       var height = paddingTop + document.getElementById("ranking").clientHeight;
       console.log("share action");
       document.getElementById("share").style.display ="none";
-      document.getElementById("dialog").style.display ="none";
+      document.getElementByClass("v-dialog").style.display ="none";
       window.scrollTo(0, 0);
       html2canvas(document.body,{
         windowHeight: document.getElementsByTagName('body')[0].scrollHeight
