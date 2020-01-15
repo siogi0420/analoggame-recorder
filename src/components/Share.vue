@@ -12,7 +12,8 @@
             <v-spacer></v-spacer>
             <v-btn
               color="primary"
-              @click="ShareAction"
+              <!-- @click="ShareAction" -->
+              @input="v => v || ShareAction()"
               >画像を共有</v-btn>
             <v-btn
               color="success"
@@ -36,8 +37,12 @@ export default {
   mounted(){
   },
   methods:{
-    ShareAction: function() {
+    OnClickShareBtn(){
       this.dialog = false;
+      ShareAction();
+    },
+    ShareAction: function() {
+      // this.dialog = false;
       var paddingTop = parseInt(document.getElementById("ranking").style.paddingTop);
       var padd = document.getElementById("ranking").style.paddingTop;
       var height = paddingTop + document.getElementById("ranking").clientHeight;
