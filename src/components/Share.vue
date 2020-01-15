@@ -46,7 +46,7 @@ export default {
       var height = paddingTop + document.getElementById("ranking").clientHeight;
       console.log("share action");
       document.getElementById("share").style.display ="none";
-      document.getElementByClass("v-dialog").style.display ="none";
+      document.getElementsByClassName("v-dialog")[0].style.display ="none";
       window.scrollTo(0, 0);
       html2canvas(document.body,{
         windowHeight: document.getElementsByTagName('body')[0].scrollHeight
@@ -61,17 +61,17 @@ export default {
             }).then(() => {
               console.log('Share was successful.')
               document.getElementById("share").style.display ="block";
-              document.getElementByClass("v-dialog").style.display ="block";
+              document.getElementsByClassName("v-dialog")[0].style.display ="block";
             }).catch((error) => {
               console.log('Sharing failed', error)
               document.getElementById("share").style.display ="block";
-              document.getElementByClass("v-dialog").style.display ="block";
+              document.getElementsByClassName("v-dialog")[0].style.display ="block";
             });
           });
         } else {
           document.body.appendChild(canvas);
           document.getElementById("share").style.display ="block";
-          document.getElementByClass("v-dialog").style.display ="block";
+          document.getElementsByClassName("v-dialog")[0].style.display ="block";
         }
       });
     },
