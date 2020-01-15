@@ -61,17 +61,14 @@ export default {
             }).then(() => {
               console.log('Share was successful.')
               document.getElementById("share").style.display ="block";
-              document.getElementsByClassName("v-dialog")[0].style.display ="block";
             }).catch((error) => {
               console.log('Sharing failed', error)
               document.getElementById("share").style.display ="block";
-              document.getElementsByClassName("v-dialog")[0].style.display ="block";
             });
           });
         } else {
           document.body.appendChild(canvas);
           document.getElementById("share").style.display ="block";
-          document.getElementsByClassName("v-dialog")[0].style.display ="block";
         }
       });
     },
