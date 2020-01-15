@@ -56,7 +56,7 @@ export default {
             const image = new File([blob], 'tmp.png', {type: 'image/png'});
             navigator.share({
               text: '今回の結果',
-              url: '',
+              url: 'https://siogi0420.github.io/analoggame-recorder/',
               files: [image]
             }).then(() => {
               console.log('Share was successful.')
