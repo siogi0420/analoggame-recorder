@@ -12,7 +12,6 @@
             <v-spacer></v-spacer>
             <v-btn
               color="primary"
-              <!-- @click="ShareAction" -->
               @input="v => v || ShareAction()"
               >画像を共有</v-btn>
             <v-btn
