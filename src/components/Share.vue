@@ -5,6 +5,7 @@
     </div>
     <v-dialog
         v-model="dialog"
+        id="dialog"
         >
         <v-card>
           <v-card-title class="headline">共有</v-card-title>
@@ -12,7 +13,7 @@
             <v-spacer></v-spacer>
             <v-btn
               color="primary"
-              @input="v => v || ShareAction()"
+              @click="ShareAction"
               >画像を共有</v-btn>
             <v-btn
               color="success"
@@ -35,18 +36,18 @@ export default {
   },
   mounted(){
   },
+  watch:{
+
+  },
   methods:{
-    OnClickShareBtn(){
-      this.dialog = false;
-      ShareAction();
-    },
     ShareAction: function() {
-      // this.dialog = false;
+      this.dialog = false;
       var paddingTop = parseInt(document.getElementById("ranking").style.paddingTop);
       var padd = document.getElementById("ranking").style.paddingTop;
       var height = paddingTop + document.getElementById("ranking").clientHeight;
       console.log("share action");
       document.getElementById("share").style.display ="none";
+      document.getElementById("dialog").style.display ="none";
       window.scrollTo(0, 0);
       html2canvas(document.body,{
         windowHeight: document.getElementsByTagName('body')[0].scrollHeight
