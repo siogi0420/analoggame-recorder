@@ -74,6 +74,7 @@
 <script>
 
 import Main from './components/Main';
+import firebase from 'firebase'
 
 export default {
   name: 'App',
@@ -81,8 +82,31 @@ export default {
     return {
       edit:false,
       newData:false,
-      pageTitle:''
+      pageTitle:'',
+      testTournament:{},
+      database:null,
+      tournamentRef:null
     }
+  },
+  created(){
+    this.database = firebase.database();
+    this.tournamentRef = this.database.ref('Tournaments');
+
+    var _this = this;
+    this.tournamentRef.on('value', function(snapshot){
+      _this.testTournament = snapshot.val();
+      var list = _this.$localStorage.get('TournamentList', []);
+      //保存されていないトーナメント名をリストに追加
+      var unregistList = Object.keys(_this.testTournament).filter(key => list.indexOf(key) == -1 );
+      //新しいトーナメントリストを保存
+      _this.$localStorage.set('TournamentList', list.concat(unregistList));
+      //トーナメント自体を保存
+      unregistList.forEach(name => {
+        _this.$localStorage.set(name, JSON.stringify(_this.testTournament[name]));
+      })
+
+    });
+    // this.tournamentRef.update({'test' : JSON.parse(this.$localStorage.get('test', []))});
   },
   mounted(){
     // this.$localStorage.remove('resultOfDate');

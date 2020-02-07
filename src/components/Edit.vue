@@ -113,6 +113,9 @@
 </template>
 
 <script>
+
+import firebase from 'firebase'
+
 export default {
   data: vm => ({
       users:[],
@@ -207,6 +210,9 @@ export default {
           const result = JSON.parse(this.$localStorage.get(this.tournament, '[]'));
           result[this.dateIndex] = editResult;
           this.$localStorage.set(this.tournament, JSON.stringify(result));
+          var database = firebase.database();
+          var tournamentRef = database.ref('Tournaments');
+          tournamentRef.update({[this.tournament] : result});
           this.registDialog = true;
         } else {
           this.errorDialog = true;

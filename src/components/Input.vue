@@ -128,6 +128,9 @@
 </template>
 
 <script>
+
+import firebase from 'firebase'
+
 export default {
   data: vm => ({
       date: new Date().toLocaleDateString().substr(0, 10),
@@ -233,6 +236,9 @@ export default {
         if (todayResult.result && todayResult.result.every(val => val.name != '' && !Number.isNaN(val.score))){
           const result = JSON.parse(this.$localStorage.get(this.tournament, '[]'));
           this.$localStorage.set(this.tournament, JSON.stringify(result.concat(todayResult)));
+          var database = firebase.database();
+          var tournamentRef = database.ref('Tournaments');
+          tournamentRef.update({[this.tournament] : result.concat(todayResult)});
           this.registDialog = true;
         } else {
           this.errorDialog = true;
